@@ -14,14 +14,13 @@ class PlayState extends Phaser.Scene {
     }
 
     create(){
-
         //Player Temp for Scene Setup
+        
         this.anims.createFromAseprite('turbo');
-        this.player = this.add.sprite(0,0, 'turbo');
-        this.player.x = game.config.width/2;
-        this.player.y = game.config.height/4 * 3;
-        this.player.play({key: 'Speed', repeat: -1 });
+        this.player = new Player(this, 'turbo', 0, 'Idle');
 
+        //Key
+        keyPress = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         // UI
 
