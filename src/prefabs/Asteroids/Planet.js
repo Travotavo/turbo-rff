@@ -26,9 +26,9 @@ class Planet extends AsteroidBase {
                     break;
             }
         }
-        if (this.y > game.config.height/2){
+        if (this.y > game.config.height/2 && this.scene.getAsteroids().length == 1){
             this.cd += 1 * delta;
-            if (this.cd > 750){
+            if (this.cd > 1000){
                 this.scene.flash.alpha += 0.25;
                 this.cd = 9;
             }

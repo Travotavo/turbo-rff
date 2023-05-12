@@ -22,10 +22,55 @@ class PlayState extends Phaser.Scene {
         this.increment = 10000;
         this.difficulty = 1;
         this.planetPresent = false;
+
+        this.tCRS = this.hex2rgbArr('0x9944AA');
+        this.tCRE = this.hex2rgbArr('0x000000');
+        this.bCRS = this.hex2rgbArr('0x4488aa');
+        this.bCRE = this.hex2rgbArr('0x9944AA');
     }
+
+    // Color Lerp Logic based on code here: https://codepen.io/njmcode/pen/NWdYBy
+
+    hex2rgbArr(hex){
+        hex = hex.split('0x');
+        let rgb = [
+            parseInt(hex[1].substring(0,2), 16),
+            parseInt(hex[1].substring(2,4), 16),
+            parseInt(hex[1].substring(4,6), 16)
+        ]
+        return rgb;
+    }
+
+    lerpColor(rgb1,rgb2, percent = 0.5){
+        let result = [];
+        let k = 0
+        for (let i of rgb1){
+            result[k] = Math.round(i + percent * (rgb2[k] - i));
+            k++;
+        }
+        return result;
+    }
+
+    rgbArr2hex(rgb){
+        let result = '0x'+ rgb[0].toString(16) + rgb[1].toString(16) + rgb[2].toString(16);
+        return result;
+    }
+
 
     create(){
         //Bg setup
+        this.skyRects = [];
+        let k = game.config.height;
+        let temp = 0;
+        let scalingColor1 = this.hex2rgbArr('0x9944AA');
+        let scalingColor2 = this.hex2rgbArr('0x4488aa');
+        
+        for (let i = 0; i < 6; i++){
+            let lerpedColor = this.lerpColor(scalingColor1, scalingColor2, 1/6 * i);
+            this.skyRects.push(this.add.rectangle(game.config.width/2, temp - 10, game.config.width, k/2, this.rgbArr2hex(lerpedColor)).setOrigin(0.5,0));
+            k = k/2;
+            temp += k;
+        }
         this.starsBG = this.add.tileSprite(0,0, game.config.width, game.config.height, 'stars').setOrigin(0,0);
 
         //Animations for enemies
@@ -109,7 +154,7 @@ class PlayState extends Phaser.Scene {
             this.cd = 0;
             this.difficulty += 1;
             this.increment += this.increment/2;
-            console.log(this.difficulty, time);
+            this.updateBG();
         }
         if (!this.planetPresent){
             this.spawnCD += 1 * delta;
@@ -146,7 +191,6 @@ class PlayState extends Phaser.Scene {
     difficultySpawn(){
         
         let selection = Math.floor(Math.random() * Math.min(4, this.difficulty));
-        console.log(selection);
         switch(selection){
             case 3: // Spawn Planet
                 this.addAsteroid(new Planet(this, game.config.width/2, -50, 'planet-var1'));
@@ -160,6 +204,17 @@ class PlayState extends Phaser.Scene {
             case 0:
                 this.addAsteroid(new AsteroidBase(this, game.config.width/2, 0, 'asteroid'));
                 return;
+        }
+    }
+
+    updateBG(){
+        let diffScale = 1/10 * this.difficulty;
+        let topColor = this.lerpColor(this.tCRS, this.tCRE, diffScale);
+        let botColor = this.lerpColor(this.bCRS, this.bCRE, diffScale);
+        //let scalingColor2 = this.hex2rgbArr('0x4488aa');
+        for (let i = 0; i < 6; i++){
+            let lerpedColor = this.lerpColor(topColor, botColor, 1/8 * i);
+            this.skyRects[i].fillColor = this.rgbArr2hex(lerpedColor);
         }
     }
 
