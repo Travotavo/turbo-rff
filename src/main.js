@@ -3,7 +3,7 @@ let config = {
     width: 180,
     height: 320,
     zoom: 2,
-    backgroundColor: '#4488aa',
+    backgroundColor: '#000000',
     pixelArt: true,
     scene: [Menu, Help, PlayState]
 }

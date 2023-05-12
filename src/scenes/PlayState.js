@@ -58,6 +58,8 @@ class PlayState extends Phaser.Scene {
 
 
     create(){
+        this.bgm = this.sound.add('game_bgm', {loop: true, volume: 0.25});
+        this.bgm.play();
         //Bg setup
         this.skyRects = [];
         let k = game.config.height;
