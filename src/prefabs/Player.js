@@ -51,7 +51,7 @@ class Player extends Phaser.GameObjects.Sprite {
         return null;
     }
 
-    //Disables use of boost below fuel threshold
+    //Returns true below fuel threshold
     fuelCheck(){
         if (this.fuel > 0.25){
             return true;
@@ -82,7 +82,7 @@ class IdleState extends PlayerState{
     }
 
     handleInput(release){
-        if (!release && this.hasCD && this.player.fuelCheck()){
+        if (!release && this.hasCD){
             this.player.play({key: 'Blank', repeat: -1});
             return new ParryState(this.player);
         }
