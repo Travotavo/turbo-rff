@@ -1,0 +1,37 @@
+{ "frames": {
+   "0": {
+    "frame": { "x": 1, "y": 1, "w": 16, "h": 46 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 14, "h": 44 },
+    "sourceSize": { "w": 14, "h": 44 },
+    "duration": 100
+   },
+   "1": {
+    "frame": { "x": 18, "y": 1, "w": 16, "h": 46 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 14, "h": 44 },
+    "sourceSize": { "w": 14, "h": 44 },
+    "duration": 100
+   },
+   "2": {
+    "frame": { "x": 1, "y": 48, "w": 16, "h": 45 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 0, "y": 1, "w": 14, "h": 43 },
+    "sourceSize": { "w": 14, "h": 44 },
+    "duration": 100
+   }
+ },
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.3-rc2-x64",
+  "image": "comet-var2.png",
+  "format": "RGBA8888",
+  "size": { "w": 34, "h": 93 },
+  "scale": "1",
+  "frameTags": [
+  ]
+ }
+}
