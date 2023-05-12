@@ -43,7 +43,7 @@ class Player extends Phaser.GameObjects.Sprite {
     collCheck(forgiveness = 0){
         let objects = this.scene.getAsteroids();
         for (let i of objects){
-            if (i.y + forgiveness > this.y){
+            if (i.y + forgiveness > this.y && i.collides){
                 return i;
             }
         }
@@ -99,7 +99,7 @@ class IdleState extends PlayerState{
             console.log("You lose!");
         }
         if (this.player.scene.flightSpeed > 1){
-            this.player.scene.flightSpeed -= .1/delta;
+            this.player.scene.flightSpeed -= .05/delta;
         }
     }
 }
@@ -121,7 +121,7 @@ class AcceleratingState extends PlayerState{
 
     update(delta){
         super.update(delta);
-        this.player.fuel -= .1/delta;
+        this.player.fuel -= .05/delta;
         this.collide = this.player.collCheck(5);
         if (this.collide != null){
             this.collide.onColl();

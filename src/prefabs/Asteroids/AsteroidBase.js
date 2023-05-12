@@ -5,8 +5,8 @@ class AsteroidBase extends Phaser.GameObjects.Sprite {
 
         scene.add.existing(this);
         this.scene = scene;
-
         this.damage = .5;
+        this.collides = true;
     }
 
     update(delta, flightSpeed){
@@ -14,6 +14,7 @@ class AsteroidBase extends Phaser.GameObjects.Sprite {
     }
 
     onColl(){
+        this.scene.emitterRock.explode(15);
         this.scene.killAsteroid(this);
         this.destroy();
         return this.damage;

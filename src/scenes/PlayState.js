@@ -3,28 +3,29 @@ class PlayState extends Phaser.Scene {
     preload(){
         this.load.path = 'assets/sprites/game/';
         this.load.aseprite('turbo', 'fist.png', 'fist.json');
+        this.load.atlas('particles', 'particles.png', 'particles.json');
         this.load.image('ui-frame', 'ui.png');
         this.load.image('fuel', 'bar.png');
         this.load.image('warning', 'warning.png');
         this.load.spritesheet('score-screen', 'screen.png', {frameWidth:54, frameHeight: 25, startFrame:0, endFrame:4});
         this.load.image('stars', 'bg/stars.png');
         this.load.image('asteroid', 'enemies/asteroid.png');
+        this.load.image('meteor', 'enemies/meteor.png');
         this.load.spritesheet('comet-var1', 'enemies/comet-var1.png', {frameWidth:14, frameHeight: 44, startFrame:0, endFrame:2});
         this.load.spritesheet('planet-var1', 'enemies/planet.png', {frameWidth:180, frameHeight: 277, startFrame:0, endFrame:2});
     }
 
     constructor(){
         super("play_state");
+        this.cd = 0;
+        this.increment = 10000;
+        this.difficulty = 1;
     }
 
     create(){
         //Bg setup
         this.starsBG = this.add.tileSprite(0,0, game.config.width, game.config.height, 'stars').setOrigin(0,0);
 
-        //Enemy List + First Enemy
-        this.asteroidList = [];
-        this.asteroidList[0] = new AsteroidBase(this, game.config.width/2, 150, 'asteroid');
-        
         //Animations for enemies
         //Comets
         this.anims.create({
@@ -40,12 +41,34 @@ class PlayState extends Phaser.Scene {
             frameRate: 4,
             repeat: -1
         });
-
+        
+        //Enemy List + First Enemy
+        this.asteroidList = [];
+        this.asteroidList[0] = new AsteroidBase(this, game.config.width/2, 0, 'asteroid');
+        this.asteroidList[1] = new Planet(this, game.config.width/2, -50, 'planet-var1');
 
         //Player Temp for Scene Setup
         this.anims.createFromAseprite('turbo');
         this.player = new Player(this, 0, 'Idle');
 
+        //Particle Setup
+        // 0 is metal
+        // 1 is rock
+        // 2 is comet
+        let emitterSettings = {
+            frame: [0],
+            lifespan: 1500,
+            speedX: { min: -100, max: 100 },
+            speedY: { min: -200, max: -150 },
+            gravityY: 600,
+            emitting: false
+        }
+        this.emitterMetal = this.add.particles(game.config.width/2, game.config.height/4 * 3, 'particles', emitterSettings);
+        emitterSettings.frame = [1];
+        this.emitterRock = this.add.particles(game.config.width/2, game.config.height/4 * 3, 'particles', emitterSettings);
+        emitterSettings.frame = [2];
+        this.emitterSparkle = this.add.particles(game.config.width/2, game.config.height/4 * 3, 'particles', emitterSettings);
+        
         //Key
         keyPress = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
 
@@ -73,13 +96,23 @@ class PlayState extends Phaser.Scene {
     }
 
     update(time, delta){
-        this.starsBG.tilePositionY -= 1/delta * this.flightSpeed;
+
+        this.starsBG.tilePositionY -= 2/delta * this.flightSpeed * this.flightSpeed;
 
         this.player.update(delta);
 
-        if (this.asteroidList.length == 0){
-            this.asteroidList.push(new Planet(this, game.config.width/2, 0, 'planet-var1'));
+        this.cd += 1 * delta;
+
+        if (this.cd > this.increment){
+            this.cd = 0;
+            this.difficulty += 1;
+            this.increment += this.increment/2;
+            console.log(this.difficulty, time);
         }
+        if (this.asteroidList.length == 0){
+            this.asteroidList.push(new Meteor(this, game.config.width/2, 0, 'meteor', 2));
+        }
+
         for (let i of this.asteroidList){
             i.update(delta, this.flightSpeed);
         }

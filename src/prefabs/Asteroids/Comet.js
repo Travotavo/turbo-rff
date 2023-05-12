@@ -5,7 +5,7 @@ class Comet extends AsteroidBase {
         this.setOrigin(0.5, 1);
         this.play('comet-1');
         if (exCount > 0){
-            scene.addAsteroid(new Comet(scene, x + (Math.random() * 15) -5, y - 50, texture, exCount - 1));
+            scene.addAsteroid(new Comet(scene, x + (Math.floor(Math.random() * 10)) -5, y - 50, texture, exCount - 1));
         }
 
         scene.add.existing(this);
@@ -19,6 +19,7 @@ class Comet extends AsteroidBase {
     }
 
     onColl(){
+        this.scene.emitterSparkle.explode(5);
         this.scene.killAsteroid(this);
         this.destroy();
         return this.damage;
