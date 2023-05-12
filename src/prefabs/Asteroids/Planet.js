@@ -10,7 +10,7 @@ class Planet extends AsteroidBase {
     }
 
     update(delta, flightSpeed){
-        this.y += .01 * delta * flightSpeed;
+        this.y += .01 * delta;
     }
 
     onColl(){
