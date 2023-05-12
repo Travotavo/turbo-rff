@@ -95,8 +95,6 @@ class IdleState extends PlayerState{
         this.collide = this.player.collCheck(-4);
         if (this.collide != null){
             this.player.fuel -= this.collide.onColl();
-            
-            console.log("You lose!");
         }
         if (this.player.scene.flightSpeed > 1){
             this.player.scene.flightSpeed -= .05/delta;

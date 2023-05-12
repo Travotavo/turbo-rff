@@ -18,8 +18,10 @@ class PlayState extends Phaser.Scene {
     constructor(){
         super("play_state");
         this.cd = 0;
+        this.spawnCD = 0;
         this.increment = 10000;
         this.difficulty = 1;
+        this.planetPresent = false;
     }
 
     create(){
@@ -44,8 +46,6 @@ class PlayState extends Phaser.Scene {
         
         //Enemy List + First Enemy
         this.asteroidList = [];
-        this.asteroidList[0] = new AsteroidBase(this, game.config.width/2, 0, 'asteroid');
-        this.asteroidList[1] = new Planet(this, game.config.width/2, -50, 'planet-var1');
 
         //Player Temp for Scene Setup
         this.anims.createFromAseprite('turbo');
@@ -73,6 +73,9 @@ class PlayState extends Phaser.Scene {
         keyPress = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
 
         // UI
+
+        this.flash = this.add.rectangle(0, 0 ,game.config.width, game.config.height, '0xFFFFFF').setOrigin(0,0).setDepth(2);
+        this.flash.alpha = 0;
 
         this.tv = this.add.sprite(2,2, 'score-screen').setOrigin(0,0);
         this.anims.create({
@@ -102,15 +105,18 @@ class PlayState extends Phaser.Scene {
         this.player.update(delta);
 
         this.cd += 1 * delta;
-
         if (this.cd > this.increment){
             this.cd = 0;
             this.difficulty += 1;
             this.increment += this.increment/2;
             console.log(this.difficulty, time);
         }
-        if (this.asteroidList.length == 0){
-            this.asteroidList.push(new Meteor(this, game.config.width/2, 0, 'meteor', 2));
+        if (!this.planetPresent){
+            this.spawnCD += 1 * delta;
+            if (this.asteroidList.length < 1 && this.spawnCD > 500){
+                this.spawnCD = 0;
+                this.difficultySpawn();
+            }
         }
 
         for (let i of this.asteroidList){
@@ -135,6 +141,26 @@ class PlayState extends Phaser.Scene {
 
     addAsteroid(incoming){
         this.asteroidList.push(incoming);
+    }
+
+    difficultySpawn(){
+        
+        let selection = Math.floor(Math.random() * Math.min(4, this.difficulty));
+        console.log(selection);
+        switch(selection){
+            case 3: // Spawn Planet
+                this.addAsteroid(new Planet(this, game.config.width/2, -50, 'planet-var1'));
+                return;
+            case 2: // Spawn Comet
+                this.addAsteroid(new Comet(this, game.config.width/2, -10, 'comet-var1', 2));
+                return;
+            case 1: // Spawn Meteor
+                this.addAsteroid(new Meteor(this, game.config.width/2, 0, 'meteor', 2));
+                return;
+            case 0:
+                this.addAsteroid(new AsteroidBase(this, game.config.width/2, 0, 'asteroid'));
+                return;
+        }
     }
 
     killAsteroid(asteroid){

@@ -1,18 +1,19 @@
 class Planet extends AsteroidBase {
     constructor(scene, x, y, texture){
-        super(scene, x, y, texture, 0); 
+        super(scene, x, y, texture, 0);
+        scene.planetPresent = true;
         this.play('planet-1');
         this.setOrigin(0.5, 1);
         scene.add.existing(this);
         this.setDepth(1);
         this.scene = scene;
         this.damage = 1;
+        this.cd = 0;
     }
 
     update(delta, flightSpeed){
         this.y += .01 * delta;
         if (this.y < game.config.height/2 && this.scene.getAsteroids().length == 1){
-            console.log();
             switch (Math.floor(Math.random() * 3)){
                 case 0:
                     this.scene.addAsteroid(new AsteroidBase(this.scene, game.config.width/2, -150, 'asteroid'));
@@ -25,9 +26,19 @@ class Planet extends AsteroidBase {
                     break;
             }
         }
+        if (this.y > game.config.height/2){
+            this.cd += 1 * delta;
+            if (this.cd > 750){
+                this.scene.flash.alpha += 0.25;
+                this.cd = 9;
+            }
+        }
     }
 
     onColl(){
+        this.scene.flash.alpha = 0;
+        this.scene.spawnCD = -1000;
+        this.scene.planetPresent = false;
         this.scene.killAsteroid(this);
         this.destroy();
         return this.damage;
