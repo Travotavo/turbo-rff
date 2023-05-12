@@ -58,7 +58,7 @@ class PlayState extends Phaser.Scene {
 
 
     create(){
-        this.bgm = this.sound.add('game_bgm', {volume: 0.25});
+        this.bgm = this.sound.add('game_bgm', {loop: true, volume: 0.25});
         this.bgm.play();
         //Bg setup
         this.skyRects = [];
@@ -159,10 +159,6 @@ class PlayState extends Phaser.Scene {
             this.updateBG();
         }
         if (!this.planetPresent){
-            if (!this.bgm.isPlaying){
-                this.musicFinished = false;
-                this.bgm.play();
-            }
             this.spawnCD += 1 * delta;
             if (this.asteroidList.length < 1 && this.spawnCD > 500){
                 this.spawnCD = 0;

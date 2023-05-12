@@ -13,6 +13,7 @@ class Planet extends AsteroidBase {
 
     update(delta, flightSpeed){
         this.y += .01 * delta;
+
         if (this.y < game.config.height/2 && this.scene.getAsteroids().length == 1){
             switch (Math.floor(Math.random() * 3)){
                 case 0:
@@ -27,6 +28,7 @@ class Planet extends AsteroidBase {
             }
         }
         if (this.y > game.config.height/2 && this.scene.getAsteroids().length == 1){
+            this.scene.bgm.volume = Math.max(this.scene.bgm.volume - (.02/delta), 0);
             this.cd += 1 * delta;
             if (this.cd > 1000){
                 this.scene.flash.alpha += 0.25;
@@ -37,6 +39,7 @@ class Planet extends AsteroidBase {
 
     onColl(){
         this.scene.flash.alpha = 0;
+        this.scene.bgm.volume = 0.25;
         this.scene.spawnCD = -1000;
         this.scene.planetPresent = false;
         this.scene.killAsteroid(this);
