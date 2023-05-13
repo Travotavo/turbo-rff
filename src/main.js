@@ -9,5 +9,12 @@ let config = {
 }
 
 let game = new Phaser.Game(config);
-
+let scoringObject = {
+    Asteroids: 0,
+    Comets: 0,
+    Meteors: 0,
+    Planets: 0,
+    HighestCombo: 0,
+    Bonus: 0
+}
 let keyPress;

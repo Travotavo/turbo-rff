@@ -9,6 +9,7 @@ class Player extends Phaser.GameObjects.Sprite {
         this.state = new IdleState(this, 250);
 
         this.release = true;
+        this.died = false;
 
         this.scene = scene;
         this.fuel = 1;
@@ -17,6 +18,9 @@ class Player extends Phaser.GameObjects.Sprite {
 
     //Time to implement a state machine! Woohoo!
     update(delta){
+        if (this.fuel == 0){
+            return true;
+        }
         this.handleInput();
         this.state.update(delta);
 
@@ -140,6 +144,7 @@ class ParryState extends PlayerState{
         if (this.collide != null){
             this.collide.onColl();
             this.player.play({key: 'Turbo', repeat: -1});
+            this.player.scene.sound.play('sfx_turbo');
             return new BoostState(this.player);
         }
         if (this.hasCD){

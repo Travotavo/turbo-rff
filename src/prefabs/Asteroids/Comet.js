@@ -19,6 +19,7 @@ class Comet extends AsteroidBase {
     }
 
     onColl(){
+        this.scene.sound.play('sfx_comet');
         this.scene.emitterSparkle.explode(5);
         this.scene.killAsteroid(this);
         this.destroy();

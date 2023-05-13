@@ -22,6 +22,7 @@ class Meteor extends AsteroidBase {
     }
 
     onColl(){  
+        this.scene.sound.play('sfx_meteor');
         if (this.hits == 0){
             this.scene.emitterMetal.explode(10);
             this.scene.killAsteroid(this);

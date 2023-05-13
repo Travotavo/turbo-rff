@@ -7,8 +7,9 @@ class Planet extends AsteroidBase {
         scene.add.existing(this);
         this.setDepth(1);
         this.scene = scene;
-        this.damage = 1;
+        this.damage = 2;
         this.cd = 0;
+        this.soundOnce = false;
     }
 
     update(delta, flightSpeed){
@@ -28,21 +29,23 @@ class Planet extends AsteroidBase {
             }
         }
         if (this.y > game.config.height/2 && this.scene.getAsteroids().length == 1){
+            if (!this.soundOnce){
+                this.soundOnce = true;
+                this.scene.sound.play('sfx_planet');
+            }
             this.scene.bgm.volume = Math.max(this.scene.bgm.volume - (.02/delta), 0);
             this.cd += 1 * delta;
             if (this.cd > 1000){
                 this.scene.flash.alpha += 0.25;
-                this.cd = 9;
+                this.cd = 0;
             }
         }
     }
 
     onColl(){
-        this.scene.flash.alpha = 0;
-        this.scene.bgm.volume = 0.25;
         this.scene.spawnCD = -1000;
-        this.scene.planetPresent = false;
         this.scene.killAsteroid(this);
+        this.scene.planetPresent = false;
         this.destroy();
         return this.damage;
     }

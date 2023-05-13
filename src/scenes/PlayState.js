@@ -147,9 +147,16 @@ class PlayState extends Phaser.Scene {
 
     update(time, delta){
 
-        this.starsBG.tilePositionY -= 2/delta * this.flightSpeed * this.flightSpeed;
+        if (this.player.update(delta)){
+            this.emitterMetal.visible = false;
+            this.emitterRock.visible = false;
+            this.emitterSparkle.visible = false;
+            this.scene.pause();
+            this.bgm.pause();
+            return;
+        }
 
-        this.player.update(delta);
+        this.starsBG.tilePositionY -= 2/delta * this.flightSpeed * this.flightSpeed;
 
         this.cd += 1 * delta;
         if (this.cd > this.increment){
@@ -161,6 +168,8 @@ class PlayState extends Phaser.Scene {
         if (!this.planetPresent){
             this.spawnCD += 1 * delta;
             if (this.asteroidList.length < 1 && this.spawnCD > 500){
+                this.bgm.volume = 0.25;
+                this.flash.alpha = 0;
                 this.spawnCD = 0;
                 this.difficultySpawn();
             }
