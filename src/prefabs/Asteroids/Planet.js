@@ -43,6 +43,7 @@ class Planet extends AsteroidBase {
     }
 
     onColl(){
+        scoringObject.Planets += 1;
         this.scene.spawnCD = -1000;
         this.scene.killAsteroid(this);
         this.scene.planetPresent = false;

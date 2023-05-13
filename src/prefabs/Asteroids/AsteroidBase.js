@@ -14,6 +14,7 @@ class AsteroidBase extends Phaser.GameObjects.Sprite {
     }
 
     onColl(){
+        scoringObject.Asteroids += 1;
         this.scene.sound.play('sfx_asteroid', {volume: 0.5});
         this.scene.emitterRock.explode(15);
         this.scene.killAsteroid(this);

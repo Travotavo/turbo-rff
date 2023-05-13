@@ -60,7 +60,15 @@ class PlayState extends Phaser.Scene {
         this.bCRS = this.hex2rgbArr('0x4488aa');
         this.bCRE = this.hex2rgbArr('0x9944AA');
 
-
+        // Reset Scoring Object
+        let scoringObject = {
+            Asteroids: 0,
+            Comets: 0,
+            Meteors: 0,
+            Planets: 0,
+            HighestCombo: 0,
+            Bonus: 0
+        }
 
         this.bgm = this.sound.add('game_bgm', {loop: true, volume: 0.25});
         this.bgm.play();
@@ -152,6 +160,7 @@ class PlayState extends Phaser.Scene {
     update(time, delta){
 
         if (this.player.update(delta)){ //runs once when the player dies
+            scoringObject.Bonus = this.difficulty;
             this.emitterMetal.visible = false;
             this.emitterRock.visible = false;
             this.emitterSparkle.visible = false;
