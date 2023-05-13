@@ -9,7 +9,7 @@ class ScoreSheet extends Phaser.Scene {
         this.cover = this.add.rectangle(0, 0 ,game.config.width, game.config.height, '0x000000').setOrigin(0,0);
         this.cover.alpha = 0.5;
 
-        keyPress = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
+        keyPress = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         console.log(scoringObject);
 
         let scoreConfig = {

@@ -129,7 +129,7 @@ class PlayState extends Phaser.Scene {
         this.emitterSparkle = this.add.particles(game.config.width/2, game.config.height/4 * 3, 'particles', emitterSettings);
         
         //Key
-        keyPress = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
+        keyPress = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         // UI
 
