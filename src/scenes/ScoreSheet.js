@@ -22,10 +22,10 @@ class ScoreSheet extends Phaser.Scene {
             }
         }
         this.iter = 0;
-        this.score = scoringObject.Comets * 25 + scoringObject.Planets * 300 + scoringObject.Comets * 25 + scoringObject.Meteors * 150;
+        this.score = scoringObject.Asteroids * 50 + scoringObject.Planets * 300 + scoringObject.Comets * 25 + scoringObject.Meteors * 150;
         this.textArr = [
             this.add.text(game.config.width/8, 25, 'Asteroids: ' + scoringObject.Asteroids, scoreConfig).setOrigin(0, 0.5),
-            this.add.text(game.config.width/4, 50, 'x 50 = ' + + scoringObject.Comets * 25, scoreConfig).setOrigin(0, 0.5),
+            this.add.text(game.config.width/4, 50, 'x 50 = ' + + scoringObject.Asteroids * 50, scoreConfig).setOrigin(0, 0.5),
             this.add.text(game.config.width/8, 75, 'Meteors: ' + scoringObject.Meteors, scoreConfig).setOrigin(0, 0.5),
             this.add.text(game.config.width/4, 100, 'x 150 = ' + scoringObject.Meteors * 150, scoreConfig).setOrigin(0, 0.5),
             this.add.text(game.config.width/8, 125, 'Comets: ' + scoringObject.Comets, scoreConfig).setOrigin(0, 0.5),
