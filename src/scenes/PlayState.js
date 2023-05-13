@@ -61,7 +61,7 @@ class PlayState extends Phaser.Scene {
         this.bCRE = this.hex2rgbArr('0x9944AA');
 
         // Reset Scoring Object
-        let scoringObject = {
+        scoringObject = {
             Asteroids: 0,
             Comets: 0,
             Meteors: 0,
