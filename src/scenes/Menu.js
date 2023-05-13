@@ -21,7 +21,7 @@ class Menu extends Phaser.Scene {
     }
 
     update() {
-        if (Phaser.Input.Keyboard.JustUp(keyPress)){
+        if (Phaser.Input.Keyboard.JustDown(keyPress)){
             this.scene.start('play_state');
         }
     }

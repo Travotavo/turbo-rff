@@ -5,7 +5,7 @@ let config = {
     zoom: 2,
     backgroundColor: '#000000',
     pixelArt: true,
-    scene: [Menu, Help, PlayState]
+    scene: [Menu, Help, PlayState, ScoreSheet]
 }
 
 let game = new Phaser.Game(config);

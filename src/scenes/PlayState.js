@@ -17,16 +17,6 @@ class PlayState extends Phaser.Scene {
 
     constructor(){
         super("play_state");
-        this.cd = 0;
-        this.spawnCD = 0;
-        this.increment = 10000;
-        this.difficulty = 1;
-        this.planetPresent = false;
-
-        this.tCRS = this.hex2rgbArr('0x9944AA');
-        this.tCRE = this.hex2rgbArr('0x000000');
-        this.bCRS = this.hex2rgbArr('0x4488aa');
-        this.bCRE = this.hex2rgbArr('0x9944AA');
     }
 
     // Color Lerp Logic based on code here: https://codepen.io/njmcode/pen/NWdYBy
@@ -58,6 +48,20 @@ class PlayState extends Phaser.Scene {
 
 
     create(){
+        // Variables
+        this.cd = 0;
+        this.spawnCD = 0;
+        this.increment = 10000;
+        this.difficulty = 1;
+        this.planetPresent = false;
+
+        this.tCRS = this.hex2rgbArr('0x9944AA');
+        this.tCRE = this.hex2rgbArr('0x000000');
+        this.bCRS = this.hex2rgbArr('0x4488aa');
+        this.bCRE = this.hex2rgbArr('0x9944AA');
+
+
+
         this.bgm = this.sound.add('game_bgm', {loop: true, volume: 0.25});
         this.bgm.play();
         //Bg setup
@@ -147,12 +151,14 @@ class PlayState extends Phaser.Scene {
 
     update(time, delta){
 
-        if (this.player.update(delta)){
+        if (this.player.update(delta)){ //runs once when the player dies
             this.emitterMetal.visible = false;
             this.emitterRock.visible = false;
             this.emitterSparkle.visible = false;
             this.scene.pause();
             this.bgm.pause();
+            let gameOver = this.scene.launch('game_over');
+            gameOver.superScene = this;
             return;
         }
 
